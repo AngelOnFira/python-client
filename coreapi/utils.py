@@ -2,7 +2,7 @@ from coreapi import exceptions
 from coreapi.compat import string_types, text_type, urlparse, _TemporaryFileWrapper
 from collections import namedtuple
 import os
-import pkg_resources
+from importlib.metadata import entry_points
 import tempfile
 
 
@@ -23,7 +23,7 @@ def domain_matches(request, domain):
 def get_installed_codecs():
     packages = [
         (package, package.load()) for package in
-        pkg_resources.iter_entry_points(group='coreapi.codecs')
+        entry_points().select(group='coreapi.codecs')
     ]
     return {
         package.name: cls() for (package, cls) in packages
